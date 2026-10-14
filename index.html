@@ -17,8 +17,8 @@
     font-family: 'Share Tech', sans-serif;
     background-color: #f1f5f9;
     background-image:
-      linear-gradient(rgba(59,130,246,0.05) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(59,130,246,0.05) 1px, transparent 1px);
+      linear-gradient(rgba(234,88,12,0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(234,88,12,0.05) 1px, transparent 1px);
     background-size: 20px 20px;
     color: #1e293b;
   }
@@ -32,7 +32,7 @@
     max-width: 440px;
     margin: 24px;
     background: #ffffff;
-    border: 1px solid #e2e8f0;
+    border: 1px solid #fed7aa;
     border-radius: 0.5rem;
     box-shadow: 0 1px 2px rgba(0,0,0,0.05);
     padding: 28px;
@@ -41,7 +41,7 @@
   .brand-title {
     font-size: 24px;
     font-weight: bold;
-    color: #2563eb;
+    color: #f97316;
     letter-spacing: 0.12em;
     text-align: center;
     margin: 0 0 22px 0;
@@ -75,7 +75,7 @@
     appearance: none;
     -webkit-appearance: none;
   }
-  input:focus { border-color: #3b82f6; box-shadow: 0 0 0 2px rgba(59,130,246,0.35); }
+  input:focus { border-color: #ea580c; box-shadow: 0 0 0 2px rgba(234,88,12,0.25); }
   input:disabled { background: #f1f5f9; color: #94a3b8; }
 
   button {
@@ -85,7 +85,7 @@
     font-size: 14px;
     font-weight: bold;
     color: #ffffff;
-    background: #2563eb;
+    background: #ea580c;
     border: none;
     border-radius: 0.5rem;
     cursor: pointer;
@@ -97,7 +97,7 @@
     justify-content: center;
     gap: 8px;
   }
-  button:hover:not(:disabled) { background: #1d4ed8; }
+  button:hover:not(:disabled) { background: #c2410c; }
   button:disabled { opacity: 0.5; cursor: default; }
 
   .msg {
@@ -141,7 +141,7 @@
     gap: 10px;
     padding: 10px 12px;
     background: #ffffff;
-    border: 1px solid #bfdbfe;
+    border: 1px solid #fed7aa;
     border-radius: 0.5rem;
     box-shadow: 0 1px 2px rgba(0,0,0,0.05);
     margin-bottom: 18px;
@@ -160,8 +160,8 @@
     height: 32px;
     min-width: 32px;
     border-radius: 999px;
-    background: #dbeafe;
-    color: #2563eb;
+    background: #ffedd5;
+    color: #ea580c;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -200,7 +200,6 @@
     border-radius: 0.375rem;
     box-shadow: none;
   }
-  /* PERBAIKAN IKON BLUR/PUTIH: Memaksa SVG mengikuti warna teks (currentColor) */
   .sq-btn svg { width: 16px; height: 16px; stroke: currentColor; } 
 
   .sq-btn.ghost { background: #f8fafc; color: #64748b; }
@@ -232,11 +231,11 @@
     border-radius: 0.375rem;
   }
   .tab-btn:hover:not(:disabled) { background: #e2e8f0; color: #1e293b; }
-  .tab-btn.active { background: #ffffff; color: #2563eb; box-shadow: 0 1px 2px rgba(0,0,0,0.06); }
+  .tab-btn.active { background: #ffffff; color: #ea580c; box-shadow: 0 1px 2px rgba(0,0,0,0.06); }
 
   /* ===================== TAB CONTENT — TINGGI DIPATOK ===================== */
   .tabs-body {
-    height: 225px; /* Tinggi dipatok presisi seukuran formulir tab Password */
+    height: 225px;
     position: relative;
   }
 
@@ -251,7 +250,7 @@
     flex: 1;
     height: 100%;
     overflow-y: auto;
-    padding-right: 4px; /* Space untuk scrollbar */
+    padding-right: 4px;
   }
   .scroll-list::-webkit-scrollbar { width: 4px; }
   .scroll-list::-webkit-scrollbar-track { background: transparent; }
@@ -264,10 +263,10 @@
     justify-content: space-between;
     gap: 10px;
     padding: 12px 14px;
-    border: 1px solid #e2e8f0;
+    border: 1px solid #fed7aa;
     border-radius: 0.5rem;
     margin-bottom: 10px;
-    background: #f8fafc;
+    background: #fff7ed;
   }
 
   .tool-name {
@@ -285,11 +284,11 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #2563eb;
+    background: #ea580c;
     color: #ffffff;
     border-radius: 0.375rem;
   }
-  .icon-btn:hover:not(:disabled) { background: #1d4ed8; }
+  .icon-btn:hover:not(:disabled) { background: #c2410c; }
   .icon-btn svg { width: 16px; height: 16px; stroke: currentColor; }
 
   /* ===================== TAB: DEVICE ===================== */
@@ -313,8 +312,8 @@
     font-family: 'Share Tech', monospace;
     font-size: 13px;
     font-weight: bold;
-    background: rgba(37,99,235,0.1);
-    color: #2563eb;
+    background: rgba(234,88,12,0.1);
+    color: #ea580c;
     padding: 4px 10px;
     border-radius: 999px;
   }
@@ -325,10 +324,10 @@
     align-items: center;
     gap: 10px;
     padding: 12px 14px;
-    border: 1px solid #e2e8f0;
+    border: 1px solid #fed7aa;
     border-radius: 0.5rem;
     margin-bottom: 10px;
-    background: #f8fafc;
+    background: #fff7ed;
   }
 
   .device-info { min-width: 0; }
@@ -451,7 +450,7 @@
   // =====================================================================
   // KONFIGURASI — WAJIB DIISI
   // =====================================================================
-  const GAS_URL = "https://script.google.com/macros/s/AKfycbwUsyX74wxfkL9NXdYEiwc5NxsB_r0eAWLN2hdblph5DIXHtsUVEoP155DfoIWPKBKZYQ/exec"; // URL deploy Web App GAS (Code.gs)
+  const GAS_URL = "https://script.google.com/macros/s/AKfycbwUsyX74wxfkL9NXdYEiwc5NxsB_r0eAWLN2hdblph5DIXHtsUVEoP155DfoIWPKBKZYQ/exec";
 
   const TOOLS_LIST = [
     { name: "METAL", url: "https://share.gemini.google/BmmTmy54DvfQ" },
@@ -500,7 +499,6 @@
 
     const btn = document.getElementById('loginBtn');
     btn.disabled = true;
-    // Animasi titik jalan untuk proses login
     btn.innerHTML = '<span>MEMPROSES<span class="dot-anim" style="display:inline-block; width:12px; text-align:left;"></span></span>';
     try {
       const res = await fetch(GAS_URL, {
@@ -671,7 +669,6 @@
 
     const btn = document.getElementById('changePasswordBtn');
     btn.disabled = true;
-    // Animasi titik jalan untuk proses ubah password
     btn.innerHTML = '<span>MEMPROSES<span class="dot-anim" style="display:inline-block; width:12px; text-align:left;"></span></span>';
 
     try {
@@ -692,7 +689,7 @@
         return;
       }
 
-      currentPassword = newPassword; // sync supaya tab Device tetap bisa dipakai tanpa login ulang
+      currentPassword = newPassword;
       document.getElementById('oldPassword').value = '';
       document.getElementById('newPassword').value = '';
       showMsg('passwordMsg', 'Password berhasil diubah.', 'success');
