@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Akses GAS BUBAR</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Share+Tech&display=swap');
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Share Tech', sans-serif;
+    background-color: #f1f5f9;
+    background-image:
+      linear-gradient(rgba(59,130,246,0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(59,130,246,0.05) 1px, transparent 1px);
+    background-size: 20px 20px;
+    color: #1e293b;
+  }
+
+  /* ===================== ANIMASI TITIK JALAN ===================== */
+  .dot-anim::after { content: ''; animation: dots 1.5s steps(4, end) infinite; }
+  @keyframes dots { 0% { content: ''; } 25% { content: '.'; } 50% { content: '..'; } 75% { content: '...'; } 100% { content: ''; } }
+
+  .card {
+    width: 100%;
+    max-width: 440px;
+    margin: 24px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    padding: 28px;
+  }
+
+  .brand-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #2563eb;
+    letter-spacing: 0.12em;
+    text-align: center;
+    margin: 0 0 22px 0;
+  }
+
+  label {
+    display: block;
+    font-size: 11px;
+    font-weight: bold;
+    color: #475569;
+    margin-bottom: 4px;
+    letter-spacing: 0.5px;
+  }
+
+  .field { margin-bottom: 14px; }
+
+  input[type="email"],
+  input[type="text"],
+  input[type="password"] {
+    width: 100%;
+    padding: 10px 12px;
+    font-size: 14px;
+    font-family: inherit;
+    text-align: center;
+    border: 1px solid #cbd5e1;
+    border-radius: 0.5rem;
+    outline: none;
+    background: #ffffff;
+    color: #1e293b;
+    transition: box-shadow 0.15s, border-color 0.15s;
+    appearance: none;
+    -webkit-appearance: none;
+  }
+  input:focus { border-color: #3b82f6; box-shadow: 0 0 0 2px rgba(59,130,246,0.35); }
+  input:disabled { background: #f1f5f9; color: #94a3b8; }
+
+  button {
+    width: 100%;
+    padding: 11px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: bold;
+    color: #ffffff;
+    background: #2563eb;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    transition: background 0.15s, opacity 0.15s;
+    margin-top: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  button:hover:not(:disabled) { background: #1d4ed8; }
+  button:disabled { opacity: 0.5; cursor: default; }
+
+  .msg {
+    margin-top: 14px;
+    padding: 10px 12px;
+    border-radius: 0.5rem;
+    font-size: 13px;
+    font-weight: bold;
+    border: 1px solid transparent;
+    display: none;
+  }
+  .msg.show { display: block; }
+  .msg.success { background: #ecfdf5; border-color: #a7f3d0; color: #047857; }
+  .msg.error { background: #fef2f2; border-color: #fecaca; color: #b91c1c; }
+
+  .hint {
+    font-size: 11px;
+    color: #94a3b8;
+    margin-top: 18px;
+    line-height: 1.5;
+    text-align: center;
+  }
+
+  .spin-icon {
+    width: 18px;
+    height: 18px;
+    animation: spin 0.8s linear infinite;
+    flex-shrink: 0;
+  }
+  .spin-icon .op25 { opacity: 0.25; }
+  .spin-icon .op75 { opacity: 0.75; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .hidden { display: none !important; }
+
+  /* ===================== USER PANEL ===================== */
+  .user-panel {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 10px 12px;
+    background: #ffffff;
+    border: 1px solid #bfdbfe;
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    margin-bottom: 18px;
+  }
+
+  .user-panel-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  .user-avatar {
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    border-radius: 999px;
+    background: #dbeafe;
+    color: #2563eb;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .user-avatar svg { width: 16px; height: 16px; stroke: currentColor; }
+
+  .user-info { min-width: 0; display: flex; flex-direction: column; }
+  .user-info-label {
+    font-size: 9px;
+    font-weight: bold;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    line-height: 1;
+  }
+  .user-info-email {
+    font-size: 12px;
+    font-weight: bold;
+    color: #334155;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .user-panel-actions { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+
+  .sq-btn {
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.375rem;
+    box-shadow: none;
+  }
+  /* PERBAIKAN IKON BLUR/PUTIH: Memaksa SVG mengikuti warna teks (currentColor) */
+  .sq-btn svg { width: 16px; height: 16px; stroke: currentColor; } 
+
+  .sq-btn.ghost { background: #f8fafc; color: #64748b; }
+  .sq-btn.ghost:hover:not(:disabled) { background: #e2e8f0; color: #334155; }
+
+  .sq-btn.danger { background: #fef2f2; color: #dc2626; }
+  .sq-btn.danger:hover:not(:disabled) { background: #dc2626; color: #ffffff; }
+
+  /* ===================== TABS ===================== */
+  .tabs {
+    display: flex;
+    gap: 4px;
+    background: #f1f5f9;
+    padding: 4px;
+    border-radius: 0.5rem;
+    margin-bottom: 16px;
+  }
+
+  .tab-btn {
+    flex: 1;
+    background: transparent;
+    color: #64748b;
+    box-shadow: none;
+    margin: 0;
+    padding: 8px 6px;
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    border-radius: 0.375rem;
+  }
+  .tab-btn:hover:not(:disabled) { background: #e2e8f0; color: #1e293b; }
+  .tab-btn.active { background: #ffffff; color: #2563eb; box-shadow: 0 1px 2px rgba(0,0,0,0.06); }
+
+  /* ===================== TAB CONTENT — TINGGI DIPATOK ===================== */
+  .tabs-body {
+    height: 225px; /* Tinggi dipatok presisi seukuran formulir tab Password */
+    position: relative;
+  }
+
+  .tab-panel {
+    display: none;
+    height: 100%;
+    flex-direction: column;
+  }
+  .tab-panel.active { display: flex; }
+
+  .scroll-list {
+    flex: 1;
+    height: 100%;
+    overflow-y: auto;
+    padding-right: 4px; /* Space untuk scrollbar */
+  }
+  .scroll-list::-webkit-scrollbar { width: 4px; }
+  .scroll-list::-webkit-scrollbar-track { background: transparent; }
+  .scroll-list::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+
+  /* ===================== TAB: TOOLS ===================== */
+  .tool-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 12px 14px;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.5rem;
+    margin-bottom: 10px;
+    background: #f8fafc;
+  }
+
+  .tool-name {
+    font-size: 14px;
+    font-weight: bold;
+    color: #0f172a;
+  }
+
+  .icon-btn {
+    width: 34px;
+    height: 34px;
+    min-width: 34px;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #2563eb;
+    color: #ffffff;
+    border-radius: 0.375rem;
+  }
+  .icon-btn:hover:not(:disabled) { background: #1d4ed8; }
+  .icon-btn svg { width: 16px; height: 16px; stroke: currentColor; }
+
+  /* ===================== TAB: DEVICE ===================== */
+  .quota-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+    flex-shrink: 0;
+  }
+
+  .quota-label {
+    font-size: 11px;
+    font-weight: bold;
+    color: #475569;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  .quota-value {
+    font-family: 'Share Tech', monospace;
+    font-size: 13px;
+    font-weight: bold;
+    background: rgba(37,99,235,0.1);
+    color: #2563eb;
+    padding: 4px 10px;
+    border-radius: 999px;
+  }
+
+  .device-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 14px;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.5rem;
+    margin-bottom: 10px;
+    background: #f8fafc;
+  }
+
+  .device-info { min-width: 0; }
+
+  .device-label {
+    font-size: 13px;
+    font-weight: bold;
+    color: #0f172a;
+    margin-bottom: 2px;
+  }
+
+  .device-meta {
+    font-size: 11px;
+    color: #94a3b8;
+  }
+
+  .icon-btn.danger { background: #fef2f2; border: 1px solid #fecaca; color: #dc2626; }
+  .icon-btn.danger:hover:not(:disabled) { background: #dc2626; color: #ffffff; }
+
+  .empty-state {
+    text-align: center;
+    padding: 26px 10px;
+    color: #94a3b8;
+    font-size: 13px;
+  }
+</style>
+</head>
+<body>
+
+  <div class="card">
+
+    <h1 class="brand-title">AKSES METAL</h1>
+
+    <!-- ===================== STEP 1: LOGIN ===================== -->
+    <div id="loginStep">
+      <div class="field">
+        <label for="loginEmail">Email</label>
+        <input type="email" id="loginEmail" placeholder="user@email.com" autocomplete="email" />
+      </div>
+
+      <div class="field">
+        <label for="loginPassword">Password</label>
+        <input type="password" id="loginPassword" placeholder="Password" autocomplete="off" />
+      </div>
+
+      <button id="loginBtn" onclick="login()">Login</button>
+
+      <div class="msg" id="loginMsg"></div>
+      <p class="hint">Password tidak disimpan di browser — login ulang setiap kali membuka halaman ini.</p>
+    </div>
+
+    <!-- ===================== STEP 2: ISI SETELAH LOGIN ===================== -->
+    <div id="mainStep" class="hidden">
+
+      <!-- ===== USER PANEL ===== -->
+      <div class="user-panel">
+        <div class="user-panel-left">
+          <div class="user-avatar">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          </div>
+          <div class="user-info">
+            <span class="user-info-label">Email Aktif</span>
+            <span class="user-info-email" id="accountEmail"></span>
+          </div>
+        </div>
+        <div class="user-panel-actions">
+          <button class="sq-btn ghost" id="eyeBtn" title="Tampilkan/Sembunyikan Email" onclick="toggleEmailVisibility()">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
+          <button class="sq-btn danger" title="Logout" onclick="doLogout()">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- ===== TABS ===== -->
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="tools" onclick="switchTab('tools')">Tools</button>
+        <button class="tab-btn" data-tab="device" onclick="switchTab('device')">Device</button>
+        <button class="tab-btn" data-tab="password" onclick="switchTab('password')">Password</button>
+      </div>
+
+      <div class="tabs-body">
+        <!-- ===== TAB: TOOLS ===== -->
+        <div class="tab-panel active" id="panel-tools">
+          <div class="scroll-list" id="toolsList"></div>
+        </div>
+
+        <!-- ===== TAB: DEVICE ===== -->
+        <div class="tab-panel" id="panel-device">
+          <div class="quota-row">
+            <span class="quota-label">Device Aktif</span>
+            <span class="quota-value" id="deviceQuota">-</span>
+          </div>
+          <div class="scroll-list" id="deviceList"></div>
+        </div>
+
+        <!-- ===== TAB: PASSWORD ===== -->
+        <div class="tab-panel" id="panel-password">
+          <div class="scroll-list">
+            <div class="field">
+              <label for="oldPassword">Password Saat Ini</label>
+              <input type="password" id="oldPassword" placeholder="Password lama" autocomplete="off" />
+            </div>
+            <div class="field">
+              <label for="newPassword">Password Baru</label>
+              <input type="password" id="newPassword" placeholder="Password baru" autocomplete="off" />
+            </div>
+            <button id="changePasswordBtn" onclick="changePassword()">Ubah Password</button>
+            <div class="msg" id="passwordMsg"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+<script>
+  // =====================================================================
+  // KONFIGURASI — WAJIB DIISI
+  // =====================================================================
+  const GAS_URL = "https://script.google.com/macros/s/AKfycbwUsyX74wxfkL9NXdYEiwc5NxsB_r0eAWLN2hdblph5DIXHtsUVEoP155DfoIWPKBKZYQ/exec"; // URL deploy Web App GAS (Code.gs)
+
+  const TOOLS_LIST = [
+    { name: "METAL", url: "https://share.gemini.google/BmmTmy54DvfQ" },
+  ];
+  // =====================================================================
+
+  let currentEmail = "";
+  let currentPassword = "";
+  let showFullEmail = false;
+
+  const svgSpin = '<svg class="spin-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle class="op25" cx="12" cy="12" r="10" stroke-width="4"></circle><path class="op75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>';
+  const svgOpen = '<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>';
+  const svgTrash = '<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>';
+
+  function showMsg(elId, text, type) {
+    const box = document.getElementById(elId);
+    box.textContent = text;
+    box.className = 'msg show ' + type;
+  }
+  function hideMsg(elId) {
+    document.getElementById(elId).className = 'msg';
+  }
+
+  function getMaskedEmail(email) {
+    if (!email) return '';
+    const [name, domain] = email.split('@');
+    if (!domain) return email;
+    return '*'.repeat(name.length) + '@' + domain;
+  }
+
+  function toggleEmailVisibility() {
+    showFullEmail = !showFullEmail;
+    document.getElementById('accountEmail').textContent = showFullEmail ? currentEmail : getMaskedEmail(currentEmail);
+  }
+
+  // ===================== LOGIN =====================
+  async function login() {
+    hideMsg('loginMsg');
+    const email = document.getElementById('loginEmail').value.trim();
+    const password = document.getElementById('loginPassword').value;
+
+    if (!email || !password) {
+      showMsg('loginMsg', 'Email dan Password wajib diisi.', 'error');
+      return;
+    }
+
+    const btn = document.getElementById('loginBtn');
+    btn.disabled = true;
+    // Animasi titik jalan untuk proses login
+    btn.innerHTML = '<span>MEMPROSES<span class="dot-anim" style="display:inline-block; width:12px; text-align:left;"></span></span>';
+    try {
+      const res = await fetch(GAS_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({ action: 'check_devices', email, password })
+      });
+      const data = await res.json();
+
+      if (!data.success) {
+        showMsg('loginMsg', data.message || 'Login gagal.', 'error');
+        return;
+      }
+
+      currentEmail = email;
+      currentPassword = password;
+      showFullEmail = false;
+
+      document.getElementById('accountEmail').textContent = getMaskedEmail(currentEmail);
+      renderTools();
+      renderDevices(data);
+
+      document.getElementById('loginStep').classList.add('hidden');
+      document.getElementById('mainStep').classList.remove('hidden');
+
+    } catch (err) {
+      showMsg('loginMsg', 'Tidak bisa terhubung ke server.', 'error');
+      console.error(err);
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Login';
+    }
+  }
+
+  function doLogout() {
+    currentEmail = "";
+    currentPassword = "";
+    showFullEmail = false;
+    document.getElementById('loginEmail').value = '';
+    document.getElementById('loginPassword').value = '';
+    hideMsg('loginMsg');
+    document.getElementById('mainStep').classList.add('hidden');
+    document.getElementById('loginStep').classList.remove('hidden');
+    switchTab('tools');
+  }
+
+  // ===================== TABS =====================
+  function switchTab(tab) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.getElementById('panel-' + tab).classList.add('active');
+  }
+
+  // ===================== TAB: TOOLS =====================
+  function renderTools() {
+    const wrap = document.getElementById('toolsList');
+    wrap.innerHTML = '';
+
+    if (TOOLS_LIST.length === 0) {
+      wrap.innerHTML = '<div class="empty-state">Belum ada tools terdaftar.</div>';
+      return;
+    }
+
+    TOOLS_LIST.forEach(function (tool) {
+      const row = document.createElement('div');
+      row.className = 'tool-row';
+      row.innerHTML = `
+        <span class="tool-name">${escapeHtml(tool.name)}</span>
+        <button class="icon-btn" title="Buka ${escapeHtml(tool.name)} di tab baru" onclick="window.open('${escapeAttr(tool.url)}', '_blank')">
+          ${svgOpen}
+        </button>
+      `;
+      wrap.appendChild(row);
+    });
+  }
+
+  // ===================== TAB: DEVICE =====================
+  function formatDate(ms) {
+    if (!ms) return 'Belum tercatat';
+    const d = new Date(ms);
+    return d.toLocaleString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+  }
+
+  function renderDevices(data) {
+    const maxLabel = data.maxDevice === 'unlimited' ? `${data.devices.length} / Unlimited` : `${data.devices.length} / ${data.maxDevice}`;
+    document.getElementById('deviceQuota').textContent = maxLabel;
+
+    const list = document.getElementById('deviceList');
+    list.innerHTML = '';
+
+    if (data.devices.length === 0) {
+      list.innerHTML = '<div class="empty-state">Belum ada device terdaftar.</div>';
+      return;
+    }
+
+    data.devices.forEach(function (d) {
+      const row = document.createElement('div');
+      row.className = 'device-row';
+      row.innerHTML = `
+        <div class="device-info">
+          <div class="device-label">${escapeHtml(d.label)}</div>
+          <div class="device-meta">${formatDate(d.lastActive)}</div>
+        </div>
+        <button class="icon-btn danger" title="Hapus device ini" onclick="removeDevice('${escapeAttr(d.deviceId)}', this)">
+          ${svgTrash}
+        </button>
+      `;
+      list.appendChild(row);
+    });
+  }
+
+  async function refreshDevices() {
+    const res = await fetch(GAS_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({ action: 'check_devices', email: currentEmail, password: currentPassword })
+    });
+    const data = await res.json();
+    if (data.success) renderDevices(data);
+  }
+
+  async function removeDevice(deviceId, btnEl) {
+    if (!confirm('Hapus device ini? Device tersebut akan otomatis logout.')) return;
+
+    btnEl.disabled = true;
+    btnEl.innerHTML = svgSpin;
+
+    try {
+      const res = await fetch(GAS_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({
+          action: 'remove_device',
+          email: currentEmail,
+          password: currentPassword,
+          targetDeviceId: deviceId
+        })
+      });
+      const data = await res.json();
+
+      if (!data.success) {
+        alert(data.message || 'Gagal menghapus device.');
+        btnEl.disabled = false;
+        btnEl.innerHTML = svgTrash;
+        return;
+      }
+
+      await refreshDevices();
+
+    } catch (err) {
+      alert('Tidak bisa terhubung ke server.');
+      console.error(err);
+      btnEl.disabled = false;
+      btnEl.innerHTML = svgTrash;
+    }
+  }
+
+  // ===================== TAB: PASSWORD =====================
+  async function changePassword() {
+    hideMsg('passwordMsg');
+    const oldPassword = document.getElementById('oldPassword').value;
+    const newPassword = document.getElementById('newPassword').value;
+
+    if (!oldPassword || !newPassword) {
+      showMsg('passwordMsg', 'Kedua kolom wajib diisi.', 'error');
+      return;
+    }
+
+    const btn = document.getElementById('changePasswordBtn');
+    btn.disabled = true;
+    // Animasi titik jalan untuk proses ubah password
+    btn.innerHTML = '<span>MEMPROSES<span class="dot-anim" style="display:inline-block; width:12px; text-align:left;"></span></span>';
+
+    try {
+      const res = await fetch(GAS_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({
+          action: 'change_password',
+          email: currentEmail,
+          oldPassword,
+          newPassword
+        })
+      });
+      const data = await res.json();
+
+      if (!data.success) {
+        showMsg('passwordMsg', data.message || 'Gagal mengubah password.', 'error');
+        return;
+      }
+
+      currentPassword = newPassword; // sync supaya tab Device tetap bisa dipakai tanpa login ulang
+      document.getElementById('oldPassword').value = '';
+      document.getElementById('newPassword').value = '';
+      showMsg('passwordMsg', 'Password berhasil diubah.', 'success');
+
+    } catch (err) {
+      showMsg('passwordMsg', 'Tidak bisa terhubung ke server.', 'error');
+      console.error(err);
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Ubah Password';
+    }
+  }
+
+  // ===================== UTIL =====================
+  function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+  function escapeAttr(str) {
+    return String(str).replace(/'/g, "\\'");
+  }
+
+  document.getElementById('loginPassword').addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') login();
+  });
+  document.getElementById('loginEmail').addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') document.getElementById('loginPassword').focus();
+  });
+</script>
+
+</body>
+</html>
